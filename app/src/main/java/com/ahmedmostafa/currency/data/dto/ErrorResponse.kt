@@ -9,5 +9,5 @@ import android.os.Parcelable
     data class ApiError(
         @SerializedName("code") val code: Int,
         @SerializedName("info") val info: String,
-        @SerializedName("type") val type: String
+        @SerializedName("type") val type: String?
     ) : Parcelable

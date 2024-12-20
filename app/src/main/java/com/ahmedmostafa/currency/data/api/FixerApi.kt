@@ -9,9 +9,9 @@ interface FixerApi {
     suspend fun getCurrencies(): CurrencyResponseDto
 
     @GET("latest")
-    suspend fun getLatestRate(
-        @Query("base") base: String,
-        @Query("symbols") symbols: String
+    suspend fun     getLatestRate(
+        @Query("base") base: String? = null,
+        @Query("symbols") symbols: String? = null
     ): ExchangeRateResponseDto
 
     @GET("timeseries")

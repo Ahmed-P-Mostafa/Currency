@@ -6,10 +6,11 @@ import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
 
 @Parcelize
-data class LatestRatesResponse(
+data class RatesResponse(
     @SerializedName("base") val base: String,
     @SerializedName("date") val date: String,
     @SerializedName("rates") val rates: Rates,
+    @SerializedName("historical") val historical: Boolean?,
     @SerializedName("success") val success: Boolean,
     @SerializedName("timestamp") val timestamp: Int,
     @SerializedName("error") val error: ApiError?,

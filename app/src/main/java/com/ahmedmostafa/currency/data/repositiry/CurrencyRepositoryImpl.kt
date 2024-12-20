@@ -37,7 +37,7 @@ class CurrencyRepositoryImpl @Inject constructor(
     override suspend fun getExchangeRate(from: String, to: String): Resource<ExchangeRate> =
         withContext(Dispatchers.IO) {
             try {
-                val response = api.getLatestRate(from, to)
+                val response = api.getLatestRate()
                 if (response.success) {
                     val rate = response.rates[to]
                     if (rate != null) {
@@ -83,8 +83,8 @@ class CurrencyRepositoryImpl @Inject constructor(
                 Resource.Success(
                     response.rates.map { (date, rate) ->
                         HistoricalRate(
-                            date = LocalDate.parse(date),
-                            rate = rate
+                            date = LocalDate.parse(response.timestamp.toString()),
+                            rate = ExchangeRate(fromCurrency = response.base, toCurrency = date, rate = rate, timestamp = response.timestamp)
                         )
                     }
                 )
