@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -38,6 +40,9 @@ android {
         compose = true
     }
 }
+kapt {
+    correctErrorTypes = true
+}
 
 dependencies {
 
@@ -56,4 +61,28 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Dependency Injection
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+    //ViewModel
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
+    // UI and Navigation
+    implementation( libs.navigation.fragment.ktx)
+    implementation( libs.androidx.navigation.ui.ktx)
+    implementation( libs.material)
+    //implementation("androidx.navigation:navigation-compose:2.6.0-alpha03")
+
+
+
+    // Networking
+    implementation( libs.retrofit2.retrofit)
+    implementation( libs.converter.gson)
+    implementation( libs.logging.interceptor)
+
+    // Coroutines
+    implementation (libs.kotlinx.coroutines.android)
 }
