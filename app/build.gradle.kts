@@ -4,17 +4,20 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("kotlin-parcelize")
 }
 
 android {
+    android.buildFeatures.buildConfig = true
     namespace = "com.ahmedmostafa.currency"
     compileSdk = 34
 
     defaultConfig {
         applicationId = "com.ahmedmostafa.currency"
         minSdk = 24
+        //noinspection OldTargetApi
         targetSdk = 34
-        versionCode = 1
+        versionCode  = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -27,6 +30,13 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "BASE_URL", "\"http://data.fixer.io/api/\"")
+            buildConfigField("String", "API_ACCESS_KEY", "\"f8bf29ae0fa1a2f3363575bd103cd05d\"")
+
+        }
+        debug {
+            buildConfigField("String", "BASE_URL", "\"http://data.fixer.io/api/\"")
+            buildConfigField("String", "API_ACCESS_KEY", "\"f8bf29ae0fa1a2f3363575bd103cd05d\"")
         }
     }
     compileOptions {
@@ -75,8 +85,6 @@ dependencies {
     implementation( libs.androidx.navigation.ui.ktx)
     implementation( libs.material)
     //implementation("androidx.navigation:navigation-compose:2.6.0-alpha03")
-
-
 
     // Networking
     implementation( libs.retrofit2.retrofit)
