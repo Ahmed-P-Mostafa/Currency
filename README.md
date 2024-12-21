@@ -13,10 +13,10 @@ A modern Android currency converter application built with Kotlin and Jetpack Co
 - ## Screenshots & Demo
 
 <div align="center">
-  <img src="screenshots/home screen.png" width="250" alt="Conversion Screen" />
-  <img src="screenshots/history screen.png" width="250" alt="History Screen" />
-  <img src="screenshots/no internet connection.png" width="250" alt="No internet error message" />
-  <img src="screenshots/quota_limit_reached.png" width="250" alt="Quota limit reached error message" />
+  <img src="screenshots/home screen.png" width="200" alt="Conversion Screen" />
+  <img src="screenshots/history screen.png" width="200" alt="History Screen" />
+  <img src="screenshots/no internet connection.png" width="200" alt="No internet error message" />
+  <img src="screenshots/quota_limit_reached.png" width="200" alt="Quota limit reached error message" />
 </div>
 
 ### Demo Video
