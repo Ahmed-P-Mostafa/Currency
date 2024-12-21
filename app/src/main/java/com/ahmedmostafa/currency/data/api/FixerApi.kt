@@ -18,7 +18,5 @@ interface FixerApi {
     @GET("{date}" )
     suspend fun getHistoricalRates(
         @Path("date") date: String,
-        @Query("base") base: String,
-        @Query("symbols") symbols: String,
         ): ExchangeRateResponseDto
 }

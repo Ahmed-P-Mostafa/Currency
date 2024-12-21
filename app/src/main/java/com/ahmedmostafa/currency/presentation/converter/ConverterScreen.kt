@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ahmedmostafa.currency.R
 import com.ahmedmostafa.currency.domain.model.Currency
+import com.ahmedmostafa.currency.presentation.LoadingIndicator
 import com.ahmedmostafa.currency.ui.theme.Blue
 import com.ahmedmostafa.currency.ui.theme.Cyan
 import com.ahmedmostafa.currency.ui.theme.Gray
@@ -161,6 +162,7 @@ private fun ConverterScreen(
                 )
             }
         }
+        LoadingIndicator(state.isLoading)
     }
 }
 
@@ -181,7 +183,6 @@ private fun CurrencyRow(
             modifier = Modifier.fillMaxWidth(),
 
             ) {
-            // Input Field
             CurrencyAmountInputField(
                 state = inputValue,
                 onValueChange =  onValueChange,
@@ -214,9 +215,10 @@ private fun CurrencyAmountInputField(
             disabledBorderColor = Gray,
             disabledTextColor = Color.Black
         ),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         textStyle = TextStyle(fontSize = 18.sp),
-        enabled = isEnabled
+        enabled = isEnabled,
+        maxLines = 1
     )
 }
 
@@ -230,7 +232,6 @@ private fun CurrencyDropdown(
     var expanded by remember { mutableStateOf(false) }
 
     Column {
-        // Text(label)
         ExposedDropdownMenuBox(
             expanded = expanded,
             onExpandedChange = { expanded = it },
@@ -243,7 +244,6 @@ private fun CurrencyDropdown(
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                 modifier = Modifier
                     .menuAnchor(),
-                //  .fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedContainerColor = Gray,
                     unfocusedContainerColor = Gray,

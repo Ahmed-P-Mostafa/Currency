@@ -31,12 +31,12 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("String", "BASE_URL", "\"http://data.fixer.io/api/\"")
-            buildConfigField("String", "API_ACCESS_KEY", "\"fea878b473c697166ece3f286a23b692\"")
+            buildConfigField("String", "API_ACCESS_KEY", "\"311560edb4465edc520152da0aabf52d\"")
 
         }
         debug {
             buildConfigField("String", "BASE_URL", "\"http://data.fixer.io/api/\"")
-            buildConfigField("String", "API_ACCESS_KEY", "\"fea878b473c697166ece3f286a23b692\"")
+            buildConfigField("String", "API_ACCESS_KEY", "\"311560edb4465edc520152da0aabf52d\"")
         }
     }
     compileOptions {
