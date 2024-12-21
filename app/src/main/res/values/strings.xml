@@ -7,4 +7,5 @@
     <string name="from">From</string>
     <string name="currencyConverter">Currency\nConverter</string>
     <string name="history_click_error_message">Please Choose both currencies first</string>
+    <string name="exchange_rate_history">Exchange Rate History</string>
 </resources>

@@ -9,5 +9,7 @@ data class ConverterState(
     val toCurrency: Currency = Currency(),
     val amount: String = "1.00",
     val convertedAmount: String = "0.00",
-    val error: String = ""
+    val error: String = "",
+    val isLoading: Boolean = false,
+
 )
