@@ -1,8 +1,6 @@
 package com.ahmedmostafa.currency.presentation.history
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +12,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,7 +36,6 @@ import com.ahmedmostafa.currency.R
 import com.ahmedmostafa.currency.domain.model.ExchangeRate
 import com.ahmedmostafa.currency.domain.model.HistoricalRate
 import com.ahmedmostafa.currency.presentation.LoadingIndicator
-import com.ahmedmostafa.currency.ui.theme.Green
 
 @Composable
 fun HistoryRoute(
@@ -75,35 +71,35 @@ private fun HistoryScreen(
         containerColor = Color.White
     ) { padding ->
 
-            Column(
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            LazyColumn(
+                contentPadding = padding,
                 modifier = Modifier
-                    .fillMaxSize()
+                    .padding(all = 16.dp)
+                    .fillMaxWidth()
             ) {
-                LazyColumn(
-                    contentPadding = padding,
-                    modifier = Modifier
-                        .padding(all = 16.dp)
-                        .fillMaxWidth()
-                ) {
-                    items(state.historicalRates.size) { i ->
-                        val rate = state.historicalRates[i]
-                        RateHistoryCard(rate)
-                    }
+                items(state.historicalRates.size) { i ->
+                    val rate = state.historicalRates[i]
+                    RateHistoryCard(rate)
                 }
-
-                if (state.error.isNotBlank()) {
-                    Text(
-                        text = state.error,
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(16.dp)
-                    )
-                }
-
             }
 
-            LoadingIndicator(state.isLoading)
+            if (state.error.isNotBlank()) {
+                Text(
+                    text = state.error,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(16.dp)
+                )
+            }
+
+        }
+
+        LoadingIndicator(state.isLoading)
 
     }
 }

@@ -1,19 +1,17 @@
 package com.ahmedmostafa.currency.presentation.history
-import android.os.Build
+
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ahmedmostafa.currency.core.utils.Resource
+import com.ahmedmostafa.currency.core.utils.getHistoryDaysDates
+import com.ahmedmostafa.currency.domain.model.HistoricalRate
 import com.ahmedmostafa.currency.domain.usecase.GetHistoricalRatesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.util.Calendar
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,57 +27,56 @@ class HistoryViewModel @Inject constructor(
         val fromCurrency = savedStateHandle.get<String>("fromCurrency") ?: "USD"
         val toCurrency = savedStateHandle.get<String>("toCurrency") ?: "EUR"
 
-        _state.update { it.copy(
-            fromCurrency = fromCurrency,
-            toCurrency = toCurrency,
-            isLoading = true
-        ) }
-        
-        loadHistoricalRates()
+        _state.update {
+            it.copy(
+                fromCurrency = fromCurrency,
+                toCurrency = toCurrency,
+                isLoading = true
+            )
+        }
+        loadHistoricalRates(fromCurrency, toCurrency)
     }
 
-    private fun loadHistoricalRates() {
+    private fun loadHistoricalRates(fromCurrency: String, toCurrency: String) {
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
-
-            when (val result = getHistoricalRatesUseCase(
-                _state.value.fromCurrency,
-                _state.value.toCurrency,
-                getCurrentDate()
-            )) {
-                is Resource.Success -> {
-                    _state.update { it.copy(
-                        historicalRates = result.data,
-                        isLoading = false,
-                        error = ""
-                    ) }
-                }
-                is Resource.Error -> {
-                    _state.update { it.copy(
-                        error = result.message,
-                        isLoading = false
-                    ) }
-                }
-
-                Resource.Loading -> {
-                    _state.update { it.copy(
-                        isLoading = true
-                    ) }
-                }
-            }
+            val result = getHistoricalRatesUseCase(
+                fromCurrency,
+                toCurrency,
+                getHistoryDaysDates()
+            )
+            updateState(result)
         }
     }
 
+    private fun updateState(result: Resource<List<HistoricalRate>>) {
+        when (result) {
+            is Resource.Success -> {
+                _state.update {
+                    it.copy(
+                        historicalRates = result.data,
+                        isLoading = false,
+                        error = ""
+                    )
+                }
+            }
 
-    private fun getCurrentDate(): String {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LocalDate.now().minusDays(1).toString()
-        } else {
-            val calendar = Calendar.getInstance()
-            calendar.add(Calendar.DAY_OF_YEAR, -1)
+            is Resource.Error -> {
+                _state.update {
+                    it.copy(
+                        error = result.message,
+                        isLoading = false
+                    )
+                }
+            }
 
-            val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            formatter.format(calendar.time)
+            Resource.Loading -> {
+                _state.update {
+                    it.copy(
+                        isLoading = true
+                    )
+                }
+            }
         }
     }
 }

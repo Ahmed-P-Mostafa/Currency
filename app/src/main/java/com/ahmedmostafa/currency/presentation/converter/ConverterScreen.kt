@@ -169,7 +169,7 @@ private fun ConverterScreen(
 
 @Composable
 private fun CurrencyRow(
-    currencies: Map<String,String>,
+    currencies: Map<String, String>,
     selectedCurrency: String,
     onCurrencySelected: (Currency) -> Unit,
     label: String,
@@ -185,7 +185,7 @@ private fun CurrencyRow(
             ) {
             CurrencyAmountInputField(
                 state = inputValue,
-                onValueChange =  onValueChange,
+                onValueChange = onValueChange,
                 isEnabled = isEnabled
             )
             VerticalDivider(Modifier.height(IntrinsicSize.Min))
@@ -225,7 +225,7 @@ private fun CurrencyAmountInputField(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CurrencyDropdown(
-    currencies: Map<String,String>,
+    currencies: Map<String, String>,
     selectedCurrency: String,
     onCurrencySelected: (Currency) -> Unit,
 ) {
@@ -290,7 +290,12 @@ fun PreviewConverterScreen() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewRow() {
-    val state = ConverterState(toCurrency = Currency(code = "BCM",name = "Bosnia-Herzegovina Convertible Mark"))
+    val state = ConverterState(
+        toCurrency = Currency(
+            code = "BCM",
+            name = "Bosnia-Herzegovina Convertible Mark"
+        )
+    )
     CurrencyRow(
         currencies = state.currencies,
         selectedCurrency = state.toCurrency.name,

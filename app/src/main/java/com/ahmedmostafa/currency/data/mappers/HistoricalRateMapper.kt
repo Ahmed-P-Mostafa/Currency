@@ -11,7 +11,7 @@ object HistoricalRateMapper {
         from: String,
         to: String,
         currentDate: String
-    )= HistoricalRate(
+    ) = HistoricalRate(
         date = currentDate,
         exchangeRate = ExchangeRate(
             fromCurrency = from,

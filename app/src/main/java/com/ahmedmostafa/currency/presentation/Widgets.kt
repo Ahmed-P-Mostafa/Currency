@@ -22,7 +22,7 @@ fun LoadingIndicator(isVisible: Boolean, size: Dp = 90.dp) {
                 .background(color = Color.Transparent),
             contentAlignment = Alignment.Center,
 
-        ) {
+            ) {
             CircularProgressIndicator(
                 modifier = Modifier.size(size),
                 strokeWidth = 4.dp, color = Green
