@@ -1,7 +1,7 @@
 package com.ahmedmostafa.currency.core.di
 
 import com.ahmedmostafa.currency.data.api.FixerApi
-import com.ahmedmostafa.currency.data.repositiry.CurrencyRepositoryImpl
+import com.ahmedmostafa.currency.data.repository.CurrencyRepositoryImpl
 import com.ahmedmostafa.currency.domain.repository.CurrencyRepository
 import com.ahmedmostafa.currency.domain.usecase.GetCurrenciesUseCase
 import com.ahmedmostafa.currency.domain.usecase.GetExchangeRateUseCase

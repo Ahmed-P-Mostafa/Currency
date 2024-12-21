@@ -1,4 +1,4 @@
-package com.ahmedmostafa.currency.data.repositiry
+package com.ahmedmostafa.currency.data.repository
 
 import com.ahmedmostafa.currency.core.utils.Resource
 import com.ahmedmostafa.currency.core.utils.safeApiCall

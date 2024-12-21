@@ -95,4 +95,8 @@ dependencies {
 
     // Coroutines
     implementation (libs.kotlinx.coroutines.android)
+
+    // Testing
+    testImplementation(libs.mockk)
+
 }
