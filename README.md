@@ -21,12 +21,12 @@ A modern Android currency converter application built with Kotlin and Jetpack Co
 
 ### Demo Video
 
-<div align="center">
-  <video width="250" controls>
-    <source src="screenshots/demo.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-</div>
+
+
+https://github.com/user-attachments/assets/5c8b666a-85af-415f-bf0c-41362fb695e0
+
+
+
 
 ## Architecture
 
