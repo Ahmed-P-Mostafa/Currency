@@ -25,85 +25,74 @@ class ConverterViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     init {
+        initializeData()
+    }
+
+    private fun initializeData() {
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            fetchRates()
             fetchCurrencies()
+            fetchRates()
         }
     }
 
-
     private suspend fun fetchCurrencies() {
         when (val result = getCurrenciesUseCase()) {
-            is Resource.Success -> {
-                _state.update {
-
-                    it.copy(
-                        currencies = result.data.associate { currency -> currency.code to currency.name },
-                        error = "",
-                        fromCurrency = Currency(name = result.data.associate { currency -> currency.code to currency.name }
-                            .get("GBP") ?: "", code = "GBP")
-                    )
-                }
-            }
-
-            is Resource.Error -> {
-                _state.update { it.copy(error = result.message) }
-            }
-
-            Resource.Loading -> {}
+            is Resource.Success -> handleCurrenciesSuccess(result.data)
+            is Resource.Error -> handleError(result.message)
+            Resource.Loading -> {} // No specific action required
         }
+    }
 
+    private fun handleCurrenciesSuccess(currencies: List<Currency>) {
+        val currencyMap = currencies.associate { it.code to it.name }
+        val defaultCurrency = Currency(
+            name = currencyMap["GBP"] ?: "",
+            code = "GBP"
+        )
+
+        _state.update {
+            it.copy(
+                currencies = currencyMap,
+                fromCurrency = defaultCurrency,
+                error = "",
+            )
+        }
     }
 
     private suspend fun fetchRates() {
         when (val result = getLatestRatesUseCase()) {
-            is Resource.Success -> {
-                _state.update {
-                    it.copy(
-                        rates = result.data,
-                        error = "",
-                        isLoading = false
-                    )
-                }
-            }
-
-            is Resource.Error -> {
-                _state.update { it.copy(error = result.message, isLoading = false) }
-            }
-
-            Resource.Loading -> {}
+            is Resource.Success -> handleRatesSuccess(result.data)
+            is Resource.Error -> handleError(result.message)
+            Resource.Loading -> {} // No specific action required
         }
     }
 
+    private fun handleRatesSuccess(rates: Map<String, Double>) {
+        _state.update {
+            it.copy(
+                rates = rates,
+                error = "",
+                isLoading = false
+            )
+        }
+    }
+
+    private fun handleError(message: String?) {
+        _state.update { it.copy(error = message ?: "Unknown error", isLoading = false) }
+    }
+
     fun setFromCurrency(currency: Currency) {
-        _state.update { it.copy(fromCurrency = currency) }
-        convertCurrency(
-            fromCurrency = _state.value.fromCurrency.code,
-            toCurrency = _state.value.toCurrency.code,
-            amount = _state.value.amount.toDoubleOrNull() ?: 0.0,
-            rates = _state.value.rates
-        )
+        updateCurrencyState { it.copy(fromCurrency = currency) }
     }
 
     fun setToCurrency(currency: Currency) {
-        _state.update { it.copy(toCurrency = currency) }
-        convertCurrency(
-            fromCurrency = _state.value.fromCurrency.code,
-            toCurrency = _state.value.toCurrency.code,
-            amount = _state.value.amount.toDoubleOrNull() ?: 0.0,
-            rates = _state.value.rates
-        )
+        updateCurrencyState { it.copy(toCurrency = currency) }
     }
 
     fun setAmount(amount: String) {
         _state.update { it.copy(amount = amount) }
-        convertCurrency(
-            fromCurrency = _state.value.fromCurrency.code,
-            toCurrency = _state.value.toCurrency.code,
-            amount = _state.value.amount.toDoubleOrNull() ?: 0.0,
-            rates = _state.value.rates
-        )
+        performConversion()
     }
 
     fun swapCurrencies() {
@@ -112,13 +101,23 @@ class ConverterViewModel @Inject constructor(
                 fromCurrency = it.toCurrency,
                 toCurrency = it.fromCurrency,
             )
-
         }
+        performConversion()
+    }
+
+    private fun updateCurrencyState(update: (ConverterState) -> ConverterState) {
+        _state.update(update)
+        performConversion()
+    }
+
+    private fun performConversion() {
+        val currentState = _state.value
+        val amount = currentState.amount.toDoubleOrNull() ?: 0.0
         convertCurrency(
-            fromCurrency = _state.value.fromCurrency.code,
-            toCurrency = _state.value.toCurrency.code,
-            amount = _state.value.amount.toDoubleOrNull() ?: 0.0,
-            rates = _state.value.rates
+            fromCurrency = currentState.fromCurrency.code,
+            toCurrency = currentState.toCurrency.code,
+            amount = amount,
+            rates = currentState.rates
         )
     }
 
@@ -128,24 +127,17 @@ class ConverterViewModel @Inject constructor(
         amount: Double,
         rates: Map<String, Double>
     ) {
-        val resource = getExchangeRateUseCase(fromCurrency, toCurrency, rates)
-        when (resource) {
-            is Resource.Error -> {
-                _state.update { it.copy(error = resource.message) }
-            }
-
-            Resource.Loading -> {
-                _state.update { it }
-            }
-
-            is Resource.Success -> {
-                val result = amount * resource.data.rate
-                _state.update {
-                    it.copy(convertedAmount = "%.2f".format(result))
-                }
-            }
+        when (val resource = getExchangeRateUseCase(fromCurrency, toCurrency, rates)) {
+            is Resource.Success -> handleConversionSuccess(amount, resource.data.rate)
+            is Resource.Error -> handleError(resource.message)
+            Resource.Loading -> {} // No specific action required
         }
     }
 
-
+    private fun handleConversionSuccess(amount: Double, rate: Double) {
+        val result = amount * rate
+        _state.update {
+            it.copy(convertedAmount = "%.2f".format(result))
+        }
+    }
 }

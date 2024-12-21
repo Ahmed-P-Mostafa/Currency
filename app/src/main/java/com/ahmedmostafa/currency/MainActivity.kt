@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CurrencyTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) {innerPadding ->
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     AppNavigation(innerPadding)
                 }
             }

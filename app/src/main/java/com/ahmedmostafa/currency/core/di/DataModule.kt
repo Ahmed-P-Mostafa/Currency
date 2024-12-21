@@ -5,8 +5,8 @@ import com.ahmedmostafa.currency.data.repositiry.CurrencyRepositoryImpl
 import com.ahmedmostafa.currency.domain.repository.CurrencyRepository
 import com.ahmedmostafa.currency.domain.usecase.GetCurrenciesUseCase
 import com.ahmedmostafa.currency.domain.usecase.GetExchangeRateUseCase
-import com.ahmedmostafa.currency.domain.usecase.GetLatestRatesUseCase
 import com.ahmedmostafa.currency.domain.usecase.GetHistoricalRatesUseCase
+import com.ahmedmostafa.currency.domain.usecase.GetLatestRatesUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
