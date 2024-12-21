@@ -44,7 +44,7 @@ The app follows Clean Architecture principles and is organized into the followin
 - **Hilt**: Dependency injection
 - **Retrofit**: Network requests
 - **Material Design 3**: UI components and styling
-- **Unit Testing**: JUnit, Mockk, Turbine
+- **Unit Testing**: JUnit, Mockk
 
 ## Project Structure
 
