@@ -1,6 +1,5 @@
 package com.ahmedmostafa.currency.presentation.history
 import android.os.Build
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,8 +21,6 @@ class HistoryViewModel @Inject constructor(
     private val getHistoricalRatesUseCase: GetHistoricalRatesUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-
-    private val TAG = "HistoryViewModel"
 
     private val _state = MutableStateFlow(HistoryState())
     val state = _state.asStateFlow()
@@ -76,11 +73,11 @@ class HistoryViewModel @Inject constructor(
 
     private fun getCurrentDate(): String {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Use LocalDate for newer APIs
-            LocalDate.now().toString()
+            LocalDate.now().minusDays(1).toString()
         } else {
-            // Use Calendar for older APIs
             val calendar = Calendar.getInstance()
+            calendar.add(Calendar.DAY_OF_YEAR, -1)
+
             val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             formatter.format(calendar.time)
         }

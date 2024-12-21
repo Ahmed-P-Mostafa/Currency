@@ -215,9 +215,10 @@ private fun CurrencyAmountInputField(
             disabledBorderColor = Gray,
             disabledTextColor = Color.Black
         ),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         textStyle = TextStyle(fontSize = 18.sp),
-        enabled = isEnabled
+        enabled = isEnabled,
+        maxLines = 1
     )
 }
 
